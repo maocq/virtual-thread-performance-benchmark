@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':model')
+    implementation 'org.springframework:spring-context'
+
+    implementation 'com.amazonaws:amazon-kinesis-producer:0.15.7'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+
+}
