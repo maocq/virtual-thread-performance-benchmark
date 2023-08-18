@@ -17,11 +17,14 @@ import reactor.core.publisher.MonoSink;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RequiredArgsConstructor
 @Service
 public class KinesisOperations implements LogGateway {
-    private static final ForkJoinPool pool = ForkJoinPool.commonPool();
+    //private static final ForkJoinPool pool = ForkJoinPool.commonPool();
+    private static final ExecutorService pool = Executors.newFixedThreadPool(10);
 
     private final KinesisProducer kinesisProducer;
     private final ObjectMapper mapper;
