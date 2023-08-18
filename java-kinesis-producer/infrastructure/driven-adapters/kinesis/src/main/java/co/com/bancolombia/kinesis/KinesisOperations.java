@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 @Service
 public class KinesisOperations implements LogGateway {
     //private static final ForkJoinPool pool = ForkJoinPool.commonPool();
-    private static final ExecutorService pool = Executors.newCachedThreadPool();
+    private static final ExecutorService pool = Executors.newFixedThreadPool(10);
 
     private final KinesisProducer kinesisProducer;
     private final ObjectMapper mapper;
