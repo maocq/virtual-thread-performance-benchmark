@@ -37,6 +37,38 @@ Resources:
       - IpProtocol: "-1"
         CidrIp: !Ref CidrSubnet
 
+
+#  RootRole:
+#    Type: 'AWS::IAM::Role'
+#    Properties:
+#      AssumeRolePolicyDocument:
+#        Version: "2012-10-17"
+#        Statement:
+#          - Effect: Allow
+#            Principal:
+#              Service:
+#                - ec2.amazonaws.com
+#            Action:
+#              - 'sts:AssumeRole'
+#      Path: /
+#      Policies:
+#        - PolicyName: root
+#          PolicyDocument:
+#            Version: "2012-10-17"
+#            Statement:
+#              - Effect: Allow
+#                Action: '*'
+#                Resource: '*'
+#
+#
+#  RootInstanceProfile:
+#    Type: 'AWS::IAM::InstanceProfile'
+#    Properties:
+#      Path: /
+#      Roles:
+#        - !Ref RootRole
+
+
   EC2InstanceApp:
     Type: AWS::EC2::Instance
     Properties:
@@ -46,6 +78,7 @@ Resources:
       SubnetId: !Ref SubnetId
       SecurityGroupIds:
         - !Ref MySecurityGroup
+#      IamInstanceProfile: !Ref RootInstanceProfile
       UserData:
         Fn::Base64: 
           !Sub |
@@ -72,7 +105,8 @@ Resources:
             cd /home/${User}
             git clone ${UrlReposity} app && chown -R ${User} app
             bash app/sh/install_docker.sh
-            
+
+
 Outputs:
   PublicIPApp:
     Description: Public IP of the App EC2 instance

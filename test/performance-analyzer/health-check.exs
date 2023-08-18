@@ -1,7 +1,7 @@
 import Config
 
 config :perf_analyzer,
-  url: "http://_IP_:8080/api/hello",
+  url: "http://_IP_:8080/actuator/health",
   request: %{
     method: "GET",
     headers: [],

@@ -8,4 +8,4 @@ cd app/$project
 docker build -t "$project" .
 
 sudo touch /tmp/env.list
-docker run -v ~/.aws/:/root/.aws/ --env-file /tmp/env.list --name "$project" -d -p 8080:8080 -p 5432:5432 "$project"
+docker run --env-file /tmp/env.list --name "$project" -d -p 8080:8080 -p 5432:5432 "$project"

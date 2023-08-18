@@ -1,7 +1,7 @@
 import Config
 
 config :perf_analyzer,
-  url: "http://_IP_:8080/api/case-one",
+  url: "http://_IP_:8080/api/usecase/path",
   request: %{
     method: "GET",
     headers: [],
