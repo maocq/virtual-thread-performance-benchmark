@@ -35,13 +35,8 @@ aws cloudformation deploy \
 outputs=$(aws cloudformation describe-stacks --stack-name $StackName | jq '{Outputs: .Stacks[].Outputs}')
 
 app_ip=$(echo $outputs | jq -r '.Outputs[] | select(.OutputKey == "PublicIPApp") | .OutputValue')
-latency_ip=$(echo $outputs | jq -r '.Outputs[] | select(.OutputKey == "PublicIPLatency") | .OutputValue')
-db_ip=$(echo $outputs | jq -r '.Outputs[] | select(.OutputKey == "PublicIPDB") | .OutputValue')
 
 
-## Latency
-wait_initialized $latency_ip $User $Key
-start_docker_image $latency_ip "node" $User $Key
 
 ## App
 wait_initialized $app_ip $User $Key

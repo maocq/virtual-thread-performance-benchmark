@@ -4,7 +4,7 @@ COPY . .
 RUN gradle bootJar
 
 
-FROM openjdk:17-alpine
+FROM ibm-semeru-runtimes:open-17.0.7_7-jre-jammy
 WORKDIR /app
 COPY --from=0 /app/applications/app-service/build/libs/JavaKinesis.jar /app/app.jar
 
