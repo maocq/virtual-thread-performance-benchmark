@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 @Service
 public class KinesisOperations implements LogGateway {
     //private static final ForkJoinPool pool = ForkJoinPool.commonPool();
-    private static final ExecutorService pool = Executors.newFixedThreadPool(20);
+    private static final ExecutorService pool = Executors.newFixedThreadPool(0);
 
     private final KinesisProducer kinesisProducer;
     private final ObjectMapper mapper;
@@ -33,7 +33,7 @@ public class KinesisOperations implements LogGateway {
     public Mono<String> emit(Log log) {
         return Mono.<UserRecordResult>create(monoSink -> {
             ListenableFuture<UserRecordResult> future = kinesisProducer
-                    .addUserRecord("poc_kpl", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
+                    .addUserRecord("poc_galatea", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
 
             FutureCallback<UserRecordResult> callback = getUserRecordResultFutureCallback(monoSink);
             Futures.addCallback(future, callback, pool);
