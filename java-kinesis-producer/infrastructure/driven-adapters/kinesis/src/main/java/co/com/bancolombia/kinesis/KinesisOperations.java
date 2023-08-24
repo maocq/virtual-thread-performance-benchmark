@@ -56,7 +56,6 @@ public class KinesisOperations implements LogGateway {
 
     @SneakyThrows
     private <T> String getJson(T value) {
-        return "{}";
-        //return mapper.writeValueAsString(value);
+        return mapper.writeValueAsString(value);
     }
 }
