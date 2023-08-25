@@ -33,7 +33,7 @@ public class KinesisOperations implements LogGateway {
     public Mono<String> emit(Log log) {
         return Mono.<UserRecordResult>create(monoSink -> {
             var count = kinesisProducer.getOutstandingRecordsCount();
-            if (count > 500)
+            if (count > 700)
                 System.out.println(count);
 
             ListenableFuture<UserRecordResult> future = kinesisProducer
