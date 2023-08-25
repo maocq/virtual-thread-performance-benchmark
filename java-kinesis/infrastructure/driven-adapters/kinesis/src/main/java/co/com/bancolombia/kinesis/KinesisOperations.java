@@ -29,15 +29,8 @@ public class KinesisOperations implements LogGateway {
                 .data(SdkBytes.fromByteArray(getJson(log).getBytes()))
                 .build();
 
-        kinesisClient.putRecord(recordRequest)
-                .handle((record, error) -> {
-                    if (error != null)
-                        error.printStackTrace();
-
-                    return "Ok";
-                });
-
-        return Mono.just("Ok");
+        return Mono.fromFuture(kinesisClient.putRecord(recordRequest))
+                .map(PutRecordResponse::shardId);
     }
 
     @SneakyThrows
