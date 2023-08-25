@@ -54,7 +54,7 @@ public class KinesisOperations implements LogGateway {
 
             @Override
             public void onSuccess(UserRecordResult result) {
-                System.out.println(result.getShardId());
+                //System.out.println(result.getShardId());
             }
         };
     }
