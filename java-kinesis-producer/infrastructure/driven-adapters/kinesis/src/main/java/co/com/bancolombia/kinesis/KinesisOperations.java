@@ -32,6 +32,10 @@ public class KinesisOperations implements LogGateway {
     @Override
     public Mono<String> emit(Log log) {
         return Mono.<UserRecordResult>create(monoSink -> {
+            var count = kinesisProducer.getOutstandingRecordsCount();
+            if (count > 500)
+                System.out.println(count);
+
             ListenableFuture<UserRecordResult> future = kinesisProducer
                     .addUserRecord("poc_galatea", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
 
