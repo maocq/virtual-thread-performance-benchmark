@@ -24,36 +24,37 @@ import java.util.concurrent.Executors;
 @Service
 public class KinesisOperations implements LogGateway {
     //private static final ForkJoinPool pool = ForkJoinPool.commonPool();
-    private static final ExecutorService pool = Executors.newFixedThreadPool(10);
+    private static final ExecutorService pool = Executors.newFixedThreadPool(30);
 
     private final KinesisProducer kinesisProducer;
     private final ObjectMapper mapper;
 
     @Override
     public Mono<String> emit(Log log) {
-        return Mono.<UserRecordResult>create(monoSink -> {
-            var count = kinesisProducer.getOutstandingRecordsCount();
-            if (count > 900)
-                System.out.println(count);
 
-            ListenableFuture<UserRecordResult> future = kinesisProducer
-                    .addUserRecord("poc_galatea", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
+        var count = kinesisProducer.getOutstandingRecordsCount();
+        if (count > 2000)
+            System.out.println(count);
 
-            FutureCallback<UserRecordResult> callback = getUserRecordResultFutureCallback(monoSink);
-            Futures.addCallback(future, callback, pool);
-        }).map(UserRecordResult::getShardId);
+        ListenableFuture<UserRecordResult> future = kinesisProducer
+                .addUserRecord("poc_galatea", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
+
+        FutureCallback<UserRecordResult> callback = getUserRecordResultFutureCallback();
+        Futures.addCallback(future, callback, pool);
+
+        return Mono.just("Ok");
     }
 
-    private static FutureCallback<UserRecordResult> getUserRecordResultFutureCallback(MonoSink<UserRecordResult> monoSink) {
+    private static FutureCallback<UserRecordResult> getUserRecordResultFutureCallback() {
         return new FutureCallback<>() {
             @Override
             public void onFailure(Throwable t) {
-                monoSink.error(t);
+                t.printStackTrace();
             }
 
             @Override
             public void onSuccess(UserRecordResult result) {
-                monoSink.success(result);
+                System.out.println(result.getShardId());
             }
         };
     }
