@@ -25,7 +25,7 @@ public class KinesisOperations implements LogGateway {
     public Mono<String> emit(Log log) {
         var recordRequest = PutRecordRequest.builder()
                 .partitionKey(UUID.randomUUID().toString())
-                .streamName("poc_galatea")
+                .streamName("poc_sdk")
                 .data(SdkBytes.fromByteArray(getJson(log).getBytes()))
                 .build();
 

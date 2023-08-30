@@ -37,7 +37,7 @@ public class KinesisOperations implements LogGateway {
                 System.out.println(count);
 
             ListenableFuture<UserRecordResult> future = kinesisProducer
-                    .addUserRecord("poc_galatea", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
+                    .addUserRecord("poc_kpl", UUID.randomUUID().toString(), ByteBuffer.wrap(getJson(log).getBytes()));
 
             FutureCallback<UserRecordResult> callback = getUserRecordResultFutureCallback(monoSink);
             Futures.addCallback(future, callback, pool);
